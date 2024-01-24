@@ -1,22 +1,24 @@
 
-import Hero from "@/components/Hero";
 import NewsList from "@/components/NewsList";
 import PopularList from "@/components/PopularList";
 import MainLayout from "@/components/layouts/MainLayout";
 
-async function getData() {
-    let Slider = (await (await fetch(`${process.env.HOST_URL}/api/news/type?type=Slider`)).json())['data']
-    let Featured = (await (await fetch(`${process.env.HOST_URL}/api/news/type?type=Featured`)).json())['data']
+
+async function getData(keyword) {
     let Popular = (await (await fetch(`${process.env.HOST_URL}/api/news/type?type=Popular`)).json())['data']
-    let Latest = (await (await fetch(`${process.env.HOST_URL}/api/news/latest`)).json())['data']
-    return {Slider:Slider,Featured:Featured,Popular:Popular,Latest:Latest}
+    let News = (await (await fetch(`${process.env.HOST_URL}/api/news/search?keyword=${keyword}`)).json())['data']
+    return {News:News,Popular:Popular}
 }
 
-export default async function Home() {
-  const data = await getData()
-  return (
-    <MainLayout>
-      <Hero featured={data['Featured']} slider={data['Slider']} />
+const Page = async (props) => {
+
+    let keyword=props.searchParams['keyword']
+    const data=await getData(keyword)
+
+
+   return (
+           <MainLayout>
+
       <div className="px-10 mt-10">
                 <h1 className="text-3xl font-semibold">LATEST</h1>
                 <hr className=""/>
@@ -28,5 +30,6 @@ export default async function Home() {
                 </div>
             </div>
     </MainLayout>
-  );
+  )
 }
+export default Page;
