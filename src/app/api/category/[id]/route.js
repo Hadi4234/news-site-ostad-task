@@ -1,12 +1,15 @@
 import { prisma } from '@/lib/prismaDB'
 import { NextResponse } from 'next/server'
-export async function GET() {
+export async function GET(req, { params }) {
     try {
         const prisma = new PrismaClient({
             log: ['query'],
         })
-        const result = await prisma.categories.findMany({
-            select: { id: true, name: true },
+        const id = params.id
+        const result = await prisma.categories.findUnique({
+            where: {
+                id: parseInt(id),
+            },
         })
         return NextResponse.json({ status: 'success', data: result })
     } catch (error) {

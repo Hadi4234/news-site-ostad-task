@@ -56,10 +56,10 @@ const SetPasswordForm = () => {
                <form onSubmit={formSubmit} className="card animated fadeIn p-5 gradient-bg">
 
                    <h5 className="mb-3">Set Password</h5>
-                   <label className="form-label">Password</label>
+                   <Label className="text-lg font-medium"  className="form-label">Password</label>
                    <input value={data.password} onChange={(e)=>{inputOnChange("password",e.target.value)}} type="password" className="form-control mb-2"/>
 
-                   <label className="form-label">Confirm Password</label>
+                   <Label className="text-lg font-medium"  className="form-label">Confirm Password</label>
                    <input value={data.c_password} onChange={(e)=>{inputOnChange("c_password",e.target.value)}} type="password" className="form-control mb-1"/>
 
                    <SubmitButton className="btn btn-danger mt-3" submit={submit} text="Confirm"/>

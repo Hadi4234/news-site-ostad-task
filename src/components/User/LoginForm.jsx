@@ -1,77 +1,129 @@
-"use client"
-import {toast} from "sonner"
-import {useState} from "react";
-import { IsEmail, IsEmpty} from "@/utility/FormHelper";
-import SubmitButton from "@/components/SubmitButton";
-import Link from "next/link";
+'use client'
+import { toast } from 'sonner'
+
+import { useState } from 'react'
+import { IsEmail, IsEmpty } from '@/utility/FormHelper'
+import SubmitButton from '@/components/SubmitButton'
+import Link from 'next/link'
+import { Button, buttonVariants } from '@/components/ui/button'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const LoginForm = () => {
-    let [data, setData] = useState({email:"",password:""});
-    const [submit, setSubmit] = useState(false);
-    const inputOnChange = (name,value) => {
-        setData((data)=>({
+    let [data, setData] = useState({ email: '', password: '' })
+    const [submit, setSubmit] = useState(false)
+    const inputOnChange = (name, value) => {
+        setData((data) => ({
             ...data,
-            [name]:value
+            [name]: value,
         }))
     }
 
+    const formSubmit = async (e) => {
+        e.preventDefault()
+        if (IsEmail(data.email)) {
+            toast('Valid Email Address Required')
+        } else if (IsEmpty(data.password)) {
+            toast('Password Required')
+        } else {
+            setSubmit(true)
 
+            const options = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }
 
-    const formSubmit =async (e) => {
-      e.preventDefault();
-      if(IsEmail(data.email)){
-          toast("Valid Email Address Required")
-      }
-      else if(IsEmpty(data.password)){
-          toast("Password Required")
-      }
-      else{
-          setSubmit(true);
+            let res = await fetch('/api/user/login', options)
+            let ResJson = await res.json()
 
-          const options = {
-              method: 'POST',
-              headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-              body: JSON.stringify(data)
-          }
+            setSubmit(false)
 
-          let res=await fetch("/api/user/login",options);
-          let ResJson=await res.json();
-
-          setSubmit(false);
-
-          if(ResJson['status']==="success"){
-              toast("Login Success")
-              window.location.href="/";
-          }
-          else{
-              toast("Request Fail")
-          }
-
-      }
+            if (ResJson['status'] === 'success') {
+                toast('Login Success')
+                window.location.href = '/'
+            } else {
+                toast('Request Fail')
+            }
+        }
     }
 
     return (
-       <div className="row h-100 justify-content-center center-screen">
-           <div className="col-md-4 col-lg-4 col-sm-12 col-12 ">
-               <form onSubmit={formSubmit} className="card animated fadeIn p-5 gradient-bg">
+        <div className="flex flex-row h-screen justify-center items-center ">
+            <Card className="p-10 w-full m-5 md:w-2/5 ">
+                <CardHeader>
+                    <CardTitle>User Login</CardTitle>
+                    <CardDescription>
+                        Deploy your new project in one-click.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={formSubmit} className=" ">
+                        <div className="flex flex-col space-y-1.5 my-2">
+                            <Label
+                                className="text-lg font-medium"
+                                htmlFor="email"
+                            >
+                                Email
+                            </Label>
+                            <Input
+                                value={data.email}
+                                onChange={(e) => {
+                                    inputOnChange('email', e.target.value)
+                                }}
+                                type="email"
+                            />
+                        </div>
+                        <div className="flex flex-col space-y-1.5 my-2">
+                            <Label
+                                className="text-lg font-medium"
+                                htmlFor="password"
+                            >
+                                User Password
+                            </Label>
+                            <Input
+                                value={data.password}
+                                onChange={(e) => {
+                                    inputOnChange('password', e.target.value)
+                                }}
+                                type="password"
+                            />
+                        </div>
 
-                   <h5 className="mb-3">User Login</h5>
-                   <label className="form-label">User Email</label>
-                   <input value={data.email} onChange={(e)=>{inputOnChange("email",e.target.value)}} type="email" className="form-control mb-2"/>
-
-                   <label className="form-label">User Password</label>
-                   <input value={data.password} onChange={(e)=>{inputOnChange("password",e.target.value)}} type="password" className="form-control mb-1"/>
-
-                   <SubmitButton className="btn btn-danger mt-3" submit={submit} text="Login"/>
-
-                   <div className="my-3 d-flex">
-                       <Link href="/user/registration" className="nav-link mx-2">Sign Up |</Link>
-                       <Link href="/user/emailVerify" className="nav-link">Forget Password</Link>
-                   </div>
-
-               </form>
-           </div>
-       </div>
-    );
-};
-export default LoginForm;
+                        <SubmitButton
+                            className=" mt-3"
+                            submit={submit}
+                            text="Login"
+                        />
+                    </form>
+                </CardContent>
+                <CardFooter className="flex flex-row divide-x">
+                    <Link
+                        href="/user/registration"
+                        className={buttonVariants({ variant: 'ghost' })}
+                    >
+                        Sign Up
+                    </Link>
+                    <Link
+                        href="/user/emailVerify"
+                        className={buttonVariants({ variant: 'ghost' })}
+                    >
+                        Forget Password
+                    </Link>
+                </CardFooter>
+            </Card>
+        </div>
+    )
+}
+export default LoginForm

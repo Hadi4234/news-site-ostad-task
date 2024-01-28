@@ -61,23 +61,23 @@ const ProfileForm = (props) => {
 
                         <div className="row">
                         <div className="col-md-4 col-lg-4 col-sm-12 p-2 col-12">
-                            <label className="form-label">First Name</label>
+                            <Label className="text-lg font-medium"  className="form-label">First Name</label>
                             <input value={data.firstName} onChange={(e)=>{inputOnChange("firstName",e.target.value)}} type="text" className="form-control mb-2"/>
                         </div>
                         <div className="col-md-4 col-lg-4 col-sm-12 p-2 col-12">
-                            <label className="form-label">Last Name</label>
+                            <Label className="text-lg font-medium"  className="form-label">Last Name</label>
                             <input value={data.lastName} onChange={(e)=>{inputOnChange("lastName",e.target.value)}} type="text" className="form-control mb-2"/>
                         </div>
                         <div className="col-md-4 col-lg-4 col-sm-12 p-2 col-12">
-                            <label className="form-label">Mobile</label>
+                            <Label className="text-lg font-medium"  className="form-label">Mobile</label>
                             <input value={data.mobile} onChange={(e)=>{inputOnChange("mobile",e.target.value)}} type="text" className="form-control mb-2"/>
                         </div>
                         <div className="col-md-4 col-lg-4 col-sm-12 p-2 col-12">
-                            <label className="form-label">Email</label>
+                            <Label className="text-lg font-medium"  className="form-label">Email</label>
                             <input value={data.email}  onChange={(e)=>{inputOnChange("email",e.target.value)}} type="email" className="form-control mb-2"/>
                         </div>
                         <div className="col-md-4 col-lg-4 col-sm-12 p-2 col-12">
-                            <label className="form-label">Password</label>
+                            <Label className="text-lg font-medium"  className="form-label">Password</label>
                             <input value={data.password}  onChange={(e)=>{inputOnChange("password",e.target.value)}} type="password" className="form-control mb-2"/>
                         </div>
                     </div>
